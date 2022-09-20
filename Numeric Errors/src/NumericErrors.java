@@ -38,11 +38,7 @@ public class NumericErrors {
 			}
 		} catch (ArithmeticException e) {
 			System.out.println(e.getMessage());
-			return sum;
-		}
-
-		if ((x >= 0 && y <= 0) || (x <= 0 && y >= 0)) {
-			return sum;
+			return -1;
 		}
 
 		return sum;
@@ -67,11 +63,7 @@ public class NumericErrors {
 			}
 		} catch (ArithmeticException e) {
 			System.out.println(e.getMessage());
-			return diff;
-		}
-
-		if ((x >= 0 && y >= 0) || (x <= 0 && y <= 0)) {
-			return diff;
+			return -1;
 		}
 
 		return diff;
@@ -79,6 +71,20 @@ public class NumericErrors {
 
 	/**
 	 * Multiply two integers and deal with the cases of possible overflow
+	 * 
+	 * 	Why is this harder than doing the sum or difference?
+	 * 	Answer: Multiplication will generate a much larger overflow which is harder to detect than by only checking if the result is 
+	 *          negative or positive as in the sum and difference. Multiply two large postive number that cause overflow may still
+	 *          generate a postive value due to the wrapping.
+	 * 
+	 *  Corner Cases: 
+	 *  	1. x > 0:
+	 * 			a. y > Integer.MAX_VALUE / x     =>    x*y > Integer.MAX_VALUE
+	 * 		    b. y < Integer.MIN_VALUE / x     =>    x*y < Integer.MIN_VALUE
+	 *      2. x < 0: 
+	 * 			a. x == -1 && y == Integer.MIN_VALUE    =>  x*y > Integer.MAX_VALUE since  |Integer.MIN_VALUE| = Integer.MAX_VALUE + 1
+	 * 			b. y < Integer.MAX_VALUE / x     =>    x*y > Integer.MAX_VALUE
+	 * 		    c. y > Integer.MIN_VALUE / x     =>    x*y < Integer.MIN_VALUE
 	 */
 	public static int multiply(int x, int y) throws ArithmeticException {
 		try {
@@ -97,18 +103,25 @@ public class NumericErrors {
 			}
 		} catch (ArithmeticException e) {
 			System.out.println(e.getMessage());
-			return x * y;
+			return -1;
 		}
 		return x * y;
 	}
 
 	/**
 	 * Divide two integers and deal with the cases of possible overflow
+	 *  
+	 *  Is overflow detection necessary?
+	 *  Answer: Yes. The special case where Integer.MIN_VALUE / (-1) will cause overflow since |Integer.MIN_VALUE| = Integer.MAX_VALUE + 1
+	 * 
+	 *  Corner Cases:
+	 * 		1. y == 0: Divide by 0 exception will occur
+	 * 		2. x == Integer.MIN_VALUE && y == -1 because |Integer.MIN_VALUE| = Integer.MAX_VALUE + 1
 	 */
 	public static int divide(int x, int y) {
 		try {
 			if (y == 0) {
-				throw new ArithmeticException("Divide by zero exception!");
+				throw new ArithmeticException("Divide by zero exception: divide(" + x + ", " + y + ")");
 			}
 
 			if (x == Integer.MIN_VALUE && y == -1) {
@@ -116,7 +129,7 @@ public class NumericErrors {
 			}
 		} catch (ArithmeticException e) {
 			System.out.println(e.getMessage());
-			return x / y;
+			return -1;
 		}
 
 		return x / y;
@@ -124,8 +137,24 @@ public class NumericErrors {
 
 	/**
 	 * Main Function, with several corner tests.
+	 * 
 	 */
 	public static void main(String args[]) {
-		System.out.println(subtract(Integer.MIN_VALUE + 10, 100));
+
+		
+
+
+		// Test cases for multiply()
+		System.out.println(multiply(5, 429496730));
+		System.out.println(multiply(5, -429496730));
+		System.out.println(multiply(-1, Integer.MIN_VALUE));
+		System.out.println(multiply(-10, -214748365));
+		System.out.println(multiply(-10, 214748365));
+		System.out.println(multiply(10000, 10000));
+
+		// Test cases for divide()
+		System.out.println(divide(5, 0));
+		System.out.println(divide(Integer.MIN_VALUE, -1));
+		System.out.println(divide(-1, Integer.MIN_VALUE));
 	}
 }
