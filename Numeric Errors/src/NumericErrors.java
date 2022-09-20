@@ -20,6 +20,15 @@ public class NumericErrors {
 
 	/**
 	 * Add two integers and deal with the cases of possible overflow
+	 * 
+	 * Corner Cases: 
+	 *      When x >= 0 AND y >= 0:
+	 * 			If: x+y < 0     =>    x+y > Integer.MAX_VALUE 	=> 		overflow occurs
+	 * 		When x <= 0 AND y <= 0:
+	 * 			If: x+y > 0     =>    x+y < Integer.MIN_VALUE 	=> 		overflow occurs
+	 * 
+	 * Otherwise, no overflow occurs for this addition operation.
+	 * 
 	 */
 	public static int add(int x, int y) throws ArithmeticException {
 		int sum = x + y;
@@ -46,6 +55,15 @@ public class NumericErrors {
 
 	/**
 	 * Subtract two integers and deal with the cases of possible overflow
+	 * 
+	 * * Corner Cases: 
+	 *      When x >= 0 AND y <= 0:
+	 * 			If: x-y < 0     =>    x-y > Integer.MAX_VALUE 	=> 		overflow occurs
+	 * 		When x <= 0 AND y >= 0:
+	 * 			If: x-y > 0     =>    x-y < Integer.MIN_VALUE 	=> 		overflow occurs
+	 * 
+	 * Otherwise, no overflow occurs for this addition operation.
+	 * 
 	 */
 	public static int subtract(int x, int y) throws ArithmeticException {
 		int diff = x - y;
@@ -72,7 +90,7 @@ public class NumericErrors {
 	/**
 	 * Multiply two integers and deal with the cases of possible overflow
 	 * 
-	 * 	Why is this harder than doing the sum or difference?
+	 * 	Question: Why is this harder than doing the sum or difference?
 	 * 	Answer: Multiplication will generate a much larger overflow which is harder to detect than by only checking if the result is 
 	 *          negative or positive as in the sum and difference. Multiply two large postive number that cause overflow may still
 	 *          generate a postive value due to the wrapping.
@@ -111,7 +129,7 @@ public class NumericErrors {
 	/**
 	 * Divide two integers and deal with the cases of possible overflow
 	 *  
-	 *  Is overflow detection necessary?
+	 *  Question: Is overflow detection necessary?
 	 *  Answer: Yes. The special case where Integer.MIN_VALUE / (-1) will cause overflow since |Integer.MIN_VALUE| = Integer.MAX_VALUE + 1
 	 * 
 	 *  Corner Cases:
@@ -141,7 +159,30 @@ public class NumericErrors {
 	 */
 	public static void main(String args[]) {
 
+		// Test cases for add()
+		// Corner cases:
+		System.out.println(add(100, Integer.MAX_VALUE-10));
+		System.out.println(add(2, Integer.MAX_VALUE-1));
+		System.out.println(add(-100, Integer.MIN_VALUE+10));
+		System.out.println(add(-2, Integer.MIN_VALUE+1));
 		
+		System.out.println(add(9, Integer.MAX_VALUE-10));
+		System.out.println(add(1, Integer.MAX_VALUE-1));
+		System.out.println(add(-9, Integer.MIN_VALUE+10));
+		System.out.println(add(-1, Integer.MIN_VALUE+1));
+		
+
+		// Test cases for subtract()
+		// Corner cases:
+		System.out.println(subtract(Integer.MAX_VALUE-10, -100));
+		System.out.println(subtract(Integer.MAX_VALUE-1, -2));
+		System.out.println(subtract(Integer.MIN_VALUE+10, 100));
+		System.out.println(subtract(Integer.MIN_VALUE+1, 2));
+		
+		System.out.println(subtract(Integer.MAX_VALUE-10, -9));
+		System.out.println(subtract(Integer.MAX_VALUE-1, 2));
+		System.out.println(subtract(Integer.MIN_VALUE+10, 8));
+		System.out.println(subtract(Integer.MIN_VALUE+1, -2));
 
 
 		// Test cases for multiply()
