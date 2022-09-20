@@ -43,15 +43,15 @@ public class NumericErrors {
 
 	public static int multiply(int x, int y) throws ArithmeticException {
 		if (x > 0) {
-			if (y > Integer.MAX_VALUE / x || y < Integer.MAX_VALUE/ x) {
+			if (y > Integer.MAX_VALUE / x || y < Integer.MIN_VALUE / x) {
 				throw new ArithmeticException("int overflow: multiply(" + x + ", " + y + ")");
 			}
 		} else if (x < 0) {
-			if(x == -1 && y == Integer.MAX_VALUE) {
+			if(x == -1 && y == Integer.MIN_VALUE) {
 				throw new ArithmeticException("int overflow: multiply(" + x + ", " + y + ")");
 			}
 			
-			if (y < Integer.MAX_VALUE / x || y > Integer.MAX_VALUE/ x) {
+			if (y < Integer.MAX_VALUE / x || y > Integer.MIN_VALUE / x) {
 				throw new ArithmeticException("int overflow: multiply(" + x + ", " + y + ")");
 			}
 		}
