@@ -62,11 +62,17 @@ public class NumericErrors {
 	}
 
 	public static int divide(int x, int y) {
+		if (y == 0) {
+			throw new ArithmeticException("Divide by zero exception!");
+		}
 
-		return 0;
+		if (x == Integer.MIN_VALUE && y == -1) {
+			throw new ArithmeticException("int overflow: divide(" + x + ", " + y + ")");
+		}
+		return x / y;
 	}
 
 	public static void main(String args[]) {
-		System.out.println((Integer.MIN_VALUE+1) / (-1));
+		System.out.println(divide(Integer.MIN_VALUE, -1));
 	}
 }
